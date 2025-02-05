@@ -3,6 +3,7 @@ import argparse
 import funciones
 
 
+
 def main(m:float, b:float):
     '''
     Funcion principal que calcula las coordenadas de una linea recta

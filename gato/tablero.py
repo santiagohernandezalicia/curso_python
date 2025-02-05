@@ -3,6 +3,7 @@ Tablero.py: dibuja el tablero en el juego del gato
 '''
 import random
 
+
 def dibuja_tablero(simbolos:dict):
     '''
     dibuja tablero'''
@@ -54,7 +55,7 @@ def juego(simbolos:dict):
     en_juego=True
     dibuja_tablero(simbolos)
     movimientos = 0
-    gana = None
+    gana = ""
     while en_juego:
             usuario(simbolos)
             dibuja_tablero(simbolos)
@@ -92,11 +93,14 @@ if __name__ == '__main__':
     numeros = {str(x) for x in range(1,10)}
     dsimbolos = {x:x for x in numeros}
     g = juego(dsimbolos)
-    if g is None:
-        print(f'Ganador: {g}')
+    if g is not None:
+        print(f'ganador: {g}')
     else:
-        print('Empate')
+        print('empate')
 
+
+if __name__ == '__main__':
+    main()
 
     ''' 
     dibuja_tablero(dsimbolos)
