@@ -3,7 +3,6 @@ Tablero.py: dibuja el tablero en el juego del gato
 '''
 import random
 
-
 def dibuja_tablero(simbolos:dict):
     '''
     dibuja tablero'''
@@ -15,14 +14,42 @@ def dibuja_tablero(simbolos:dict):
         {simbolos ['7']} | {simbolos ['8']} | {simbolos ['9']} 
         ''')
     
-def ia(simbolos:dict):
+def ia(simbolos:dict, lista_combinaciones:dict):
     '''juega maquina'''
-    ocupado = True
-    while ocupado is True:
-        x = random.choice(list(simbolos.keys()))
-        if simbolos[x] not in ['X','O']:
+    for x in simbolos.keys():
+        if simbolos[x] not in ['X', 'O']:  # Si la casilla está vacía
+            simbolos[x] = 'O'  # La IA coloca su "O"
+            if checa_winner(simbolos, lista_combinaciones) == 'O':  # Si la IA gana, termina
+                return
+            simbolos[x] = x  # Deshacer la jugada si no gana
+
+    # Aquí la IA intenta bloquear al usuario si está a punto de ganar
+    for x in simbolos.keys():
+        if simbolos[x] not in ['X', 'O']:  # Si la casilla está vacía
+            simbolos[x] = 'X'  # Simula la jugada del usuario
+            if checa_winner(simbolos, lista_combinaciones) == 'X':  # Si el usuario ganaría, la IA lo bloquea
+                simbolos[x] = 'O'  # Coloca la "O" para bloquear
+                return
+            simbolos[x] = x  # Deshacer la jugada si no es necesario bloquear
+
+    # Si el centro está libre, juega allí
+    if simbolos["5"] == "5":
+        simbolos["5"] = "O"
+        return
+
+    # Si el centro está ocupado, juega en una esquina
+    esquinas = ['1', '3', '7', '9']
+    for esquina in esquinas:
+        if simbolos[esquina] == esquina:  # Si la esquina está libre
+            simbolos[esquina] = 'O'
+            return
+
+    # Si no hay esquinas disponibles, juega en cualquier otro espacio libre
+    for x in simbolos.keys():
+        if simbolos[x] not in ['X', 'O']:
             simbolos[x] = 'O'
-            ocupado = False
+            return
+
 
 def usuario(simbolos:dict):
     '''juega usuario'''
@@ -51,32 +78,48 @@ def juego(simbolos:dict):
         ['2','5','8'],
         ['3','6','9']
     ]
+    ia(simbolos, lista_combinaciones)
 
     en_juego = True
     dibuja_tablero(simbolos)
     movimientos = 0
     gana = None
+
     while en_juego:
-            usuario(simbolos)
-            dibuja_tablero(simbolos)
-            movimientos += 1
-            gana = checa_winner(simbolos, lista_combinaciones)
-            if gana is not None:
-                en_juego = False
-                continue
-            if movimientos >= 9:
-                en_juego = False
-                continue
-            ia(simbolos)
-            dibuja_tablero(simbolos)
-            movimientos += 1
-            gana = checa_winner(simbolos, lista_combinaciones)
-            if gana is not None:
-                en_juego = False
-                continue
-            if movimientos >= 9:
-                en_juego = False
-                continue
+        # Turno del usuario
+        usuario(simbolos)
+        dibuja_tablero(simbolos)
+        movimientos += 1
+
+        # Verificar si hay un ganador
+        gana = checa_winner(simbolos, lista_combinaciones)
+        if gana is not None:
+            en_juego = False
+            continue
+
+        # Verificar empate (si las casillas están llenas)
+        if movimientos >= 9:
+            en_juego = False
+            print("¡El juego terminó en empate!")
+            continue
+
+        # Turno de la IA
+        ia(simbolos, lista_combinaciones)
+        dibuja_tablero(simbolos)
+        movimientos += 1
+
+        # Verificar si hay un ganador después de la jugada de la IA
+        gana = checa_winner(simbolos, lista_combinaciones)
+        if gana is not None:
+            en_juego = False
+            continue
+        
+        # Verificar empate después del turno de la IA
+        if movimientos >= 9:
+            en_juego = False
+            print("¡El juego terminó en empate!")
+            continue
+
     return gana
 
 
@@ -119,27 +162,5 @@ def despliega_tablero(score:dict):
 if __name__ == '__main__':
     numeros = {str(x) for x in range(1,10)}
     dsimbolos = {x:x for x in numeros}
-    g = juego(dsimbolos)
-    if g is not None:
-        print(f'ganador es: {g}')
-    else:
-        print('Empate')
-
-    ''' 
-    dibuja_tablero(dsimbolos)
-    ia(dsimbolos)
-    dibuja_tablero(dsimbolos)
-    usuario(dsimbolos)
-    dibuja_tablero(dsimbolos)
-
-  
-    x = random.choice(numeros)
-    numeros.remove(x)
-    dsimbolos[x] = 'X'
-    dibuja_tablero(dsimbolos)
-    o = random.choice(numeros)
-    numeros.remove(O)
-    dsimbolos[o] = 'O'
-    dibuja_tablero(dsimbolos)
-    print(numeros)
-    '''
+    
+    
