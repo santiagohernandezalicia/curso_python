@@ -40,7 +40,8 @@ def obten_palabras(lista:list)->list:
     ('ascii','ignore').decode('ascii') for palabra in set_palabras}
     return list(set_palabras)
 
-def adivina_letra(abc:dict, palabra:str, letras_adivinas:set,turnos:int):
+
+def adivina_letra(abc:dict, palabra:str, letras_adivinas:set,turnos:int)->int:
     '''adivina una letra de la palabra'''
     palabra_oculta = ""
     for letra in palabra:
@@ -48,9 +49,10 @@ def adivina_letra(abc:dict, palabra:str, letras_adivinas:set,turnos:int):
             palabra_oculta += letra
         else:
             palabra_oculta += '_'
-    print(f'tienes {turnos} turnos')
-    print(f'palabra: {palabra_oculta}')
+    print(f'tienes {turnos} de fallar')
+    abcd= ''.join(abc.values())
     print(f'el abecedario es: {abc}')
+    print(f'palabra: {palabra_oculta}')
     letra = input('ingresa una letra: ')
     letra = letra.lower()
     if len(letra) != 1 or letra not in abc:
@@ -62,9 +64,7 @@ def adivina_letra(abc:dict, palabra:str, letras_adivinas:set,turnos:int):
             letras_adivinas.add(letra)
         else:
             turnos -= 1
-
-
-
+    return turnos
 
 
 if __name__ == "__main__":
@@ -76,11 +76,9 @@ if __name__ == "__main__":
     p = choice(lista_palabras)
     print(p)    
     abcdario = {letra:letra for letra in string.ascii_lowercase}
-    letras_adivinas = set()
-    turnos = 5
-    print(f"tienes {turnos} turnos")
-    adivina_letra(abcdario, p, letras_adivinas, turnos)
-    print(f"tienes {turnos} turnos")
-    adivina_letra(abcdario, p, letras_adivinas, turnos)
-
-    
+    adivinadas = set()
+    t = 5
+    t = adivina_letra(abcdario, p , adivinadas, t)
+    print(t)
+    t = adivina_letra(abcdario, p , adivinadas, t)
+    print(t)
