@@ -11,7 +11,12 @@ class Athlete:
         return f"Athlete('{self.name}')"
 
     def display(self):
-        print(f"{self.name}")        
+        print(f"{self.name}") 
+
+    def to_json(self) -> dict:
+        """metodo para representar la clase como diccionario"""
+        return {"name": self.name}       
+    
 
 if __name__ == "__main__":
     a = Athlete("Ana, G")

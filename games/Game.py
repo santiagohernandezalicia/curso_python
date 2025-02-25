@@ -1,6 +1,7 @@
 from Athlete import Athlete
 from Sport import Sport
 from Team import Team
+from random import choice
 
 class Game:
     """Clase para representar un juego"""
@@ -21,16 +22,39 @@ class Game:
     
     def play(self):
         """juego simulado entre equipos"""
-        for s in self.sport_dict.values():
-            print(s)
+        league = self.A.sport.league
+        points= self.sport_dict[league]
+        a = choice(points)
+        b = choice(points)
+        self.score[self.A.name] = a
+        self.score[self.B.name] = b
+
+    def __str__(self) -> str:
+        """metodo para mostrar clase como string"""
+        return """Game: {self.A.name:20s}: {self.score[self.A.name]:3d}
+        {self.score[self.B.name]:3d}:{self.B.name:20s}"""
+
+    def __repr__(self) -> str:
+        ''' metodo para representar la clase como string'''
+        return f"Game(A={repr(self.A)}, B={repr(self.B)}"
+    
+    def to_json(self) -> dict:
+        '''metodo para representar la clase como diccionarios'''
+        return {"A": self.A.to_json(), "B": self.B.to_json(), "score": self.score}
+
 
 if __name__ == "__main__":
     dt =['Jordan','Jhonson','Pipen','Bird','Kobe']
     cz =['Bjovik','Czak','Pfeizer','Leonard','Kempfe']
     players_a = [Athlete(x) for x in dt]
     players_b = [Athlete(x) for x in cz]
-    basketball = Sport("NBA", 5, "DreamTeam")
-    t = Team("Dream Team", basketball)
-    c = Team("CzakTeam", basketball)
-    game = Game(t, c)
+    basketball = Sport("DreamTeam",5,"NBA")
+    t = Team("Dream Team", basketball,players_a)
+    c = Team("CzakTeam", basketball,players_b)
+    game = Game(t, c) 
+    print(game)
     game.play()
+    print(game)
+    print(repr(game))
+    print("--------")
+    print(game.to_json())
