@@ -10,7 +10,8 @@ class Game:
         'NBA': [x for x in range(70, 120)],
         'NFL': [x for x in range(3, 56)],
         'LMX': [x for x in range(0, 9)],
-        'MLB': [x for x in range(0, 10)]
+        'MLB': [x for x in range(0, 10)],
+        'FIFA': [x for x in range(0, 11)]
     }
 
     def __init__(self, A:Team, B:Team)-> None:
@@ -31,8 +32,8 @@ class Game:
 
     def __str__(self) -> str:
         """metodo para mostrar clase como string"""
-        return """Game: {self.A.name:20s}: {self.score[self.A.name]:3d}
-        {self.score[self.B.name]:3d}:{self.B.name:20s}"""
+        return f"Game: {self.A.name}: {self.score[self.A.name]} - {self.score[self.B.name]}:{self.B.name}"
+    
 
     def __repr__(self) -> str:
         ''' metodo para representar la clase como string'''
