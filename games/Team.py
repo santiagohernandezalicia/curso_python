@@ -23,6 +23,7 @@ class  Team:
     def to_json(self)-> dict:
         """Metdo para representar la clase como diccionario"""
         return {"name": self.name, "sport": self.sport.to_json(), "players": [p.to_json() for p in self.players]}
+    
 if __name__ == "__main__":
     a1 = Athlete("Michael Jordan")
     a2 = Athlete("Kobe Bryant")
