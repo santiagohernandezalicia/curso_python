@@ -10,6 +10,9 @@ def index():
                         <p>Ir a la pagina <a href="/about">Acerca de</a></p>
                     </body>
             </html>'''
+
+
+            
 @app.route("/about") # info about the site
 def about():
     return '''<html>
