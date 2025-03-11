@@ -25,5 +25,21 @@ def busqueda_titulo():
         print(resultado)
     return render_template('titulo.html', lista_libros=resultado)
 
+
+@app.route('/libro/<id_libro>', methods=['GET'])
+def libro(id_libro:str):
+    '''Pagina de informacion de un libro'''
+    diccionario_id = fn.crea_diccionario(lista_libros, 'book_id')
+    if id_libro in diccionario_id:
+        book = diccionario_id[id_libro]
+        return render_template('libro.html', libro=book)
+    else:
+        return render_template('libro.html', libro=None)
+
+@app.route('/letra/', methods=['GET'])
+def plantilla_letra():
+    '''pagina de inicio de la aplicaion'''
+    return render_template('letra.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
