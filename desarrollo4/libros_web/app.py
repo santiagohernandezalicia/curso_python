@@ -12,9 +12,9 @@ diccionario_autores = fn.crea_diccionario(lista_libros,'author')
 @app.route('/')
 def inicio():
     '''pagina de inicio de la aplicaion'''
-    return render_template('index.html')
+    return render_template('inicio.html')
 
-@app.route('/titulo', methods=['GET','POST'])
+@app.route('/titulos', methods=['GET','POST'])
 def busqueda_titulo():
     '''busca un libro por el titulo'''
     resultado=[]
@@ -23,7 +23,7 @@ def busqueda_titulo():
         resultado = fn.busca_en_diccionario(diccionario_titulos, titulo)
         print(titulo)
         print(resultado)
-    return render_template('titulo.html', lista_libros=resultado)
+    return render_template('titulos.html', lista_libros=resultado)
 
 
 @app.route('/libro/<id_libro>', methods=['GET'])
@@ -40,6 +40,17 @@ def libro(id_libro:str):
 def plantilla_letra():
     '''pagina de inicio de la aplicaion'''
     return render_template('letra.html')
+
+
+@app.route('/titulo', methods=['GET','POST'])
+def title():
+    '''pagina que busca un libro'''
+    print(request.method)
+    resultado=[]
+    if request.method == 'POST':
+        titulo = request.form.get('searchInput','')
+        resultado = fn.busca_en_diccionario(diccionario_titulos, titulo)
+    return render_template('titulos.html', lista_libros=resultado)
 
 if __name__ == '__main__':
     app.run(debug=True)
