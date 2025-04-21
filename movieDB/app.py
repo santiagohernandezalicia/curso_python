@@ -1,5 +1,5 @@
 ''' Programa principal de movieDatabase '''
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash 
 import random
 import os
 import movie_classes as mc
@@ -65,6 +65,37 @@ def login():
         
     return render_template('login.html')
 
+@app.route('/agregar_relacion', methods=['GET','POST'])
+def agregar_relacion():
+    ''' Agrega una relación entre un actor y una película '''
+    if sistema.usuario_actual is None:
+        flash('Debes iniciar sesión para agregar relaciones', 'warning')
+        return redirect(url_for('login'))
+    if request.method == 'GET':
+        actores_list=[]
+        for actor in sistema.actores.values():
+            actores_list.append({
+                'id_estrella': actor.id_estrella,
+                'nombre': actor.nombre
+            })
+            sorted_actores = sorted(actores_list, key=lambda x: x['nombre'])
+        peliculas_list=[]
+        for pelicula in sistema.peliculas.values():
+            peliculas_list.append({
+                'id_pelicula': pelicula.id_pelicula,
+                'titulo': pelicula.titulo_pelicula
+            })
+            sorted_peliculas = sorted(peliculas_list, key=lambda x: x['titulo'])
+        return render_template('agregar_relacion.html', actores=sorted_actores, peliculas=sorted_peliculas)
+    if request.method == 'POST':
+        id_actor = int(request.form['actorSelect'])
+        id_pelicula = int(request.form['movieSelect'])
+        personaje  = request.form['character']
+        sistema.agregar_relacion(id_pelicula, id_actor,personaje)
+        sistema.guardar_csv(relaciones_csv,sistema.relaciones)
+        flash('Relación agregada correctamente', 'success')
+
+        return redirect(url_for('actor', id_actor=id_actor))
 
 if __name__ == '__main__':
     app.run(debug=True)
