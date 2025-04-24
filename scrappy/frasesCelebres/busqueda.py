@@ -51,8 +51,9 @@ if __name__== '__main__':
     parser.add_argument('palabras', nargs='+', help='Lista de palabras a buscar en las frases.')
     #parsear los documentos
     args= parser.parse_args()
-    archivo_frases = os.path.join(os.path.dirname(__file__), './frases.csv')
+    archivo_frases = os.path.join(os.path.dirname(__file__), 'frases.csv')
     #llamar a la funcion principal
     main(archivo_frases, args.palabras)
 
     print(f'Frases encontradas: {len(args.palabras)}')
+    
